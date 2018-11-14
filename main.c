@@ -29,6 +29,7 @@ int main(int argc, char* argv[])
 	
 	if (rangeA > rangeB) {
 		printf("\nError. a > b \n\n");
+		return 1;
 	}
 	
 	for(size_t i = 0; i < size; i++){
