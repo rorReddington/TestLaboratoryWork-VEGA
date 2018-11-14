@@ -3,80 +3,80 @@
 #include <cassert>
 #include "vector.h"
 
-int *data = 0; // указатель на массив
-size_t size = 0; // количество добавленных элементов
-size_t capacity = 0; // максимальное количество элементов, которое можно
+int *vector = 0; // указатель на массив
+size_t vecSize = 0; // количество добавленных элементов
+size_t vecCapacity = 0; // максимальное количество элементов, которое можно
 							// хранить в выделенной памяти
 
 void reserve(size_t newCap)
 {
-	if (newCap > capacity)
+	if (newCap > vecCapacity)
 	{
-		capacity = (capacity == 0) ? 1 : capacity;
+		vecCapacity = (vecCapacity == 0) ? 1 : vecCapacity;
 
-		while (newCap > capacity)
-			capacity <<= 1;
+		while (newCap > vecCapacity)
+			vecCapacity <<= 1;
 
-		if (data == 0)
-			data = (int *)malloc(capacity * sizeof(int));
+		if (vector == 0)
+			vector = (int *)malloc(vecCapacity * sizeof(int));
 		else
-			data = (int *)realloc((void *)data, capacity * sizeof(int));
+			vector = (int *)realloc((void *)vector, vecCapacity * sizeof(int));
 	}
 }
 
 void append(int value)
 {
-	reserve(size + 1);
+	reserve(vecSize + 1);
 
-	data[size] = value;
+	vector[vecSize] = value;
 
-	size++;
+	vecSize++;
 }
 
 void insert(size_t pos, int value)
 {
-	assert(pos < size);
+	assert(pos < vecSize);
 
-	reserve(size + 1);
+	reserve(vecSize + 1);
 
-	for (int i = size; i > pos; i--)
-		data[i] = data[i - 1];
+	for (int i = vecSize; i > pos; i--)
+		vector[i] = vector[i - 1];
 
-	data[pos] = value;
+	vector[pos] = value;
 
-	size++;
+	vecSize++;
 }
 
 void erase(size_t pos)
 {
-	assert(pos < size);
+	assert(pos < vecSize);
 
-	for (int i = pos; i < size; i++)
-		data[i] = data[i + 1];
+	for (int i = pos; i < vecSize; i++)
+		vector[i] = vector[i + 1];
 
-	size--;
+	vecSize--;
 }
 
 void print()
 {
 	
-	for (int i = 0; i < size; i++)
-		printf("%i ", data[i]);
+	for (int i = 0; i < vecSize; i++)
+		printf("%i ", vector[i]);
 
 	printf("\n");
 }
 
 void squeeze()
 {
-	if (data == 0)
+	if (vector == 0)
 		return;
 
-	if (size == 0)
+	if (vecSize == 0)
 	{
-		free(data);
+		free(vector);
 		return;
 	}
 
-	data = (int *)realloc((void *)data, size * sizeof(int));
-	capacity = size;
+	vector = (int *)realloc((void *)vector, vecSize * sizeof(int));
+	vecCapacity = vecSize;
 }

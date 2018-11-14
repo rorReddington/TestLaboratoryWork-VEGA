@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 	printf("\nYour array: ");
 	print();
 	
-	int rangeA = 0, rangeB = 0, rangeCurrent = 0;
+	int rangeA = 0, rangeB = 0;
 	printf("\nEnter the range [a, b]: ");
 	scanf("%i %i", &rangeA, &rangeB);
 	
@@ -32,9 +32,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
-	for(size_t i = 0; i < size; i++){
+	for(size_t i = 0; i < vecSize; i++){
 		
-		if (data[i] >= rangeA && data[i] <= rangeB) {
+		if (vector[i] >= rangeA && vector[i] <= rangeB) {
 			
 			erase(i);
 			i--;
