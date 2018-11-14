@@ -9,10 +9,10 @@ int main(int argc, char* argv[])
 	size_t arraySize = 0; 
 	
 	printf("Specify the size of the array: ");
-	scanf("%i", &arraySize);
+	scanf("%lu", &arraySize);
 	
 	int number = 0;
-	printf("Please enter the elements(%d):\n", arraySize);
+	printf("Please enter the elements(%lu):\n", arraySize);
 	
 	for (int i = 0; i < arraySize; i++) {
 		
@@ -31,21 +31,12 @@ int main(int argc, char* argv[])
 		printf("\nError. a > b \n\n");
 	}
 	
-	for (size_t i = 0; i < size; i++) {
+	for(size_t i = 0; i < size; i++){
 		
-		for (int j = rangeA; j <= rangeB; j++) {
+		if (data[i] >= rangeA && data[i] <= rangeB) {
 			
-			if (data[i] == j)
-				erase(i);
-		}
-	}
-	
-	for (int j = rangeA; j <= rangeB; j++) {
-		
-		for (size_t i = 0; i < size; i++) {
-				
-			if (data[i] == j)
-				erase(i);
+			erase(i);
+			i--;
 		}
 	}
 	

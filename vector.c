@@ -61,7 +61,7 @@ void print()
 {
 	
 	for (int i = 0; i < size; i++)
-		printf("%d ", data[i]);
+		printf("%i ", data[i]);
 
 	printf("\n");
 }
