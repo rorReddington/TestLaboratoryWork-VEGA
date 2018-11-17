@@ -137,7 +137,7 @@ void squeeze(Vector *v)
 
 void clear(Vector *v)
 {
-	if (NULL == v->data)
+	if (v->data == 0)
 		return;
 
 	free(v->data);
