@@ -3,80 +3,154 @@
 #include <cassert>
 #include "vector.h"
 
-int *vector = 0; // указатель на массив
-size_t vecSize = 0; // количество добавленных элементов
-size_t vecCapacity = 0; // максимальное количество элементов, которое можно
-							// хранить в выделенной памяти
-
-void reserve(size_t newCap)
+Vector *createVector() 
 {
-	if (newCap > vecCapacity)
+	vector *newVector = (vector *)malloc(sizeof(Vector));
+
+	newVector->data = 0;
+	newVector->size = 0;
+	newVector->capacity = 0;
+
+	return newVector;
+}
+
+void deleteVector(Vector *v) 
+{
+	if (v->data != 0)
+		free(v->data);
+
+	free(v);
+}
+
+Vector *copyVector(Vector *v) 
+{
+	vector *newVector = createVector();
+
+	newVector->capacity = v->capacity;
+	newVector->size = v->size;
+	newVector->data = 0;
+
+	newVector->capacity = (newVector->capacity == 0) ? 1 : newVector->capacity;
+
+	newVector->data = (int *)malloc(v->capacity * sizeof(int));
+
+	for (int i = 0; i < v->size; i++)
+		newVector->data[i] = v->data[i];
+
+	return newVector;
+}
+
+void swapVector(Vector *v1, Vector *v2) 
+{
+	int *tempData = v2->data;
+	size_t tempSize = v2->size;
+	size_t tempCapacity = v2->capacity;
+
+	v2->data = v1->data;
+	v2->size = v1->size;
+	v2->capacity = v1->capacity;
+
+	v1->data = tempData;
+	v1->size = tempSize;
+	v1->capacity = tempCapacity;
+}
+
+void reserve(Vector *v, size_t newCap) 
+{
+	if (newCap > v->capacity)
 	{
-		vecCapacity = (vecCapacity == 0) ? 1 : vecCapacity;
+		v->capacity = (v->capacity == 0) ? 1 : v->capacity;
 
-		while (newCap > vecCapacity)
-			vecCapacity <<= 1;
+		while (newCap > v->capacity)
+			v->capacity <<= 1;
 
-		if (vector == 0)
-			vector = (int *)malloc(vecCapacity * sizeof(int));
+		if (v->data == 0)
+			v->data = (int *)malloc(v->capacity * sizeof(int));
 		else
-			vector = (int *)realloc((void *)vector, vecCapacity * sizeof(int));
+			v->data = (int *)realloc((void *)v->data, v->capacity * sizeof(int));
 	}
 }
 
-void append(int value)
+void append(Vector *v, int value) 
 {
-	reserve(vecSize + 1);
+	reserve(v, v->size + 1);
 
-	vector[vecSize] = value;
+	v->data[v->size] = value;
 
-	vecSize++;
+	v->size++;
 }
 
-void insert(size_t pos, int value)
+void append(Vector *v, int *array, size_t count)
 {
-	assert(pos < vecSize);
+	assert(count != 0);
 
-	reserve(vecSize + 1);
-
-	for (int i = vecSize; i > pos; i--)
-		vector[i] = vector[i - 1];
-
-	vector[pos] = value;
-
-	vecSize++;
+	for (size_t i = 0; i < count; i++)
+		append(v, array[i]);
 }
 
-void erase(size_t pos)
+void insert(Vector *v, size_t pos, int value)
 {
-	assert(pos < vecSize);
+	assert(pos < v->size);
 
-	for (int i = pos; i < vecSize; i++)
-		vector[i] = vector[i + 1];
+	reserve(v, v->size + 1);
 
-	vecSize--;
+	for (size_t i = v->size; i > pos; i--)
+		v->data[i] = v->data[i - 1];
+
+	v->data[pos] = value;
+
+	v->size++;
 }
 
-void print()
+void erase(Vector *v, size_t pos) 
 {
-	
-	for (int i = 0; i < vecSize; i++)
-		printf("%i ", vector[i]);
+	assert(pos < v->size);
+
+	for (size_t i = pos; i < v->size; i++)
+		v->data[i] = v->data[i + 1];
+
+	v->size--;
+}
+
+void print(Vector *v)
+{
+	for (size_t i = 0; i < v->size; i++)
+		printf("%i ", v->data[i]);
 
 	printf("\n");
 }
 
-void squeeze()
+void squeeze(Vector *v)
 {
-	if (vector == 0)
+	if (v->data == 0)
 		return;
 
-	if (vecSize == 0)
+	if (v->size == 0)
 	{
-		free(vector);
+		free(v->data);
 		return;
 	}
 
-	vector = (int *)realloc((void *)vector, vecSize * sizeof(int));
-	vecCapacity = vecSize;
+	v->data = (int *)realloc((void *)v->data, v->size * sizeof(int));
+	v->capacity = v->size;
+}
+
+void clear(Vector *v)
+{
+	if (v->data == 0)
+		return;
+
+	free(v->data);
+	v->data = 0;
+	v->capacity = 0;
+	v->size = 0;
+}
+
+int indexOf(Vector *v, int value)
+{
+	for (size_t i = 0; i < v->size; i++)
+		if (v->data[i] == value)
+			return i;
+
+	return -1;
 }
