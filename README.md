@@ -1,4 +1,4 @@
-# TestLaboratoryWork-VEGA
+# VectorLaboratoryWork-VEGA
 ## Задание:
 
 - Реализовать модуль для работы с динамическим массивом (vector, [лаба](https://vk.com/kmbalg18?w=wall-171046711_27/all));
