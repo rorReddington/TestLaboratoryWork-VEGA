@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
 	system("clear");
 
-	vector *vec = createVector();
+	Vector *vec = createVector();
 
 	size_t arraySize = 0;
 

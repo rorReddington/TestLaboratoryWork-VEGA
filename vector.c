@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <cassert>
+#include <assert.h>
 #include "vector.h"
 
 Vector *createVector() 
 {
-	vector *newVector = (vector *)malloc(sizeof(Vector));
+	Vector *newVector = (Vector *)malloc(sizeof(Vector));
 
 	newVector->data = 0;
 	newVector->size = 0;
@@ -24,7 +24,7 @@ void deleteVector(Vector *v)
 
 Vector *copyVector(Vector *v) 
 {
-	vector *newVector = createVector();
+	Vector *newVector = createVector();
 
 	newVector->capacity = v->capacity;
 	newVector->size = v->size;
@@ -80,7 +80,7 @@ void append(Vector *v, int value)
 	v->size++;
 }
 
-void append(Vector *v, int *array, size_t count)
+void appendArray(Vector *v, int *array, size_t count)
 {
 	assert(count != 0);
 
